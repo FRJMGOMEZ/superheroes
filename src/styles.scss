@@ -1,0 +1,135 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$superheroes-primary: mat.define-palette((
+  50 : #e4e3e6,
+    100 : #bcbac1,
+    200 : #8f8c98,
+    300 : #625d6e,
+    400 : #403b4f,
+    500 : #1e1830,
+    600 : #1a152b,
+    700 : #161124,
+    800 : #120e1e,
+    900 : #0a0813,
+    A100 : #6e56ff,
+    A200 : #4223ff,
+    A400 : #2200ef,
+    A700 : #1e00d5,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+));
+$superheroes-accent: mat.define-palette( (
+  50 : #fcf2e7,
+  100 : #f8dec3,
+  200 : #f3c89c,
+  300 : #eeb274,
+  400 : #eaa256,
+  500 : #e69138,
+  600 : #e38932,
+  700 : #df7e2b,
+  800 : #db7424,
+  900 : #d56217,
+  A100 : #ffffff,
+  A200 : #ffe3d4,
+  A400 : #ffc3a1,
+  A700 : #ffb287,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #000000,
+      500 : #000000,
+      600 : #000000,
+      700 : #000000,
+      800 : #000000,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+));
+
+// The warn palette is optional (defaults to red).
+$superheroes-warn: mat.define-palette((
+  50 : #f9e0e0,
+  100 : #f0b3b3,
+  200 : #e68080,
+  300 : #db4d4d,
+  400 : #d42626,
+  500 : #cc0000,
+  600 : #c70000,
+  700 : #c00000,
+  800 : #b90000,
+  900 : #ad0000,
+  A100 : #ffd7d7,
+  A200 : #ffa4a4,
+  A400 : #ff7171,
+  A700 : #ff5858,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #ffffff,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+));
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$superheroes-theme: mat.define-light-theme((
+  color: (
+    primary: $superheroes-primary,
+    accent: $superheroes-accent,
+    warn: $superheroes-warn
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($superheroes-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { width: 100%;overflow: hidden;  background-color: #E0E9F5;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
