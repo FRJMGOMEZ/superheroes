@@ -1,0 +1,18 @@
+<div  [class.example-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" >
+        <button mat-icon-button (click)="snav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="example-app-name">Superhéroes app</h1>
+    </mat-toolbar>
+
+    <mat-sidenav-container [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav opened #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
+            <ng-content select="[id=links]"></ng-content>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <ng-content select="[id=content]"></ng-content>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

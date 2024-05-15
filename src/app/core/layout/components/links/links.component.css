@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+button {
+  width: 280px;
+  display: block;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.active{ 
+  color: #DB7424!important
+}
+
+mat-icon{
+  margin-right: 10px;
+}
+
+.links-container {
+ margin-top: 10px;
+}
