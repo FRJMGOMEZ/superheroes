@@ -7,5 +7,11 @@ export const environment = {
       messagingSenderId: "1059091301042",
       appId: "1:1059091301042:web:af8fa917c6a8c4e1a7ffab",
       measurementId: "G-3K5SD06L00"
+    },
+    cloudinaryConfig:{
+      cloudName:'deqvbpmxn',
+      urlBase:'https://api.cloudinary.com/v1_1',
+      preset:'kyhqokcw'
     }
+/*     cloudinaryUrl:"https://api.cloudinary.com/v1_1/${cloudName}/upload" */
 };
