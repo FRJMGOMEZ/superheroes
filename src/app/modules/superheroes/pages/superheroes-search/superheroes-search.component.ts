@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,8 +10,9 @@ import { Superheroe } from '../../models/superheroe.interface';
 import { ShowAvatarComponent } from '../../components/show-avatar/show-avatar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, debounceTime, of, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 
 @Component({
@@ -25,40 +26,51 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatInputModule,
     ShowAvatarComponent,
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule
   ],
-  templateUrl:'./superheroes-search.component.html',
+  templateUrl: './superheroes-search.component.html',
   styleUrls: ['./superheroes-search.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SuperheroesSearchComponent implements AfterViewInit, OnDestroy{
+export class SuperheroesSearchComponent implements AfterViewInit, OnDestroy {
+
+  @ViewChild('confirmRemoveDialogRef') confirmRemoveDialogRef: TemplateRef<any>;
   private cdr = inject(ChangeDetectorRef);
   private superheroesApiService = inject(SuperheroesApiService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private ar = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['avatar','realName', 'nickName', 'team', 'superpowers','edit'];
-  dataSource:MatTableDataSource<Superheroe>;
-  filterControl:FormControl = this.fb.control('');
-  private filterChangeSubscription:Subscription;
+  displayedColumns: string[] = ['avatar', 'realName', 'nickName', 'team', 'superpowers', 'edit', 'remove'];
+  dataSource: MatTableDataSource<Superheroe>;
+  filterControl: FormControl = this.fb.control('');
+  private filterChangeSubscription: Subscription;
+  superheroeAboutToDelete:Superheroe;
+
+  get getSetSuperheroes() {
+    return this.superheroesApiService.getSuperheroes().pipe(tap(superheroes => {
+      this.dataSource = new MatTableDataSource(superheroes);
+      this.cdr.detectChanges();
+    }))
+  }
   constructor() {
-      this.superheroesApiService.getSuperheroes().subscribe(superheroes => {
-        this.dataSource = new MatTableDataSource(superheroes);
-        this.cdr.detectChanges();
-        this.setFilterPredicate();
-      });
+    this.getSetSuperheroes.subscribe(() => {
+      this.setFilterPredicate();
+    });
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.listenFilterChange();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.filterChangeSubscription.unsubscribe();
   }
 
-  private setFilterPredicate(){
+  private setFilterPredicate() {
     this.dataSource.filterPredicate = (item: Superheroe, filter: string) => {
       let hasMatched = false;
       hasMatched = item.nickName.toLowerCase().includes(filter);
@@ -71,17 +83,28 @@ export class SuperheroesSearchComponent implements AfterViewInit, OnDestroy{
         return matched;
       }, false) : hasMatched;
       return hasMatched;
-    } 
+    }
   }
 
-  private listenFilterChange(){
-    this.filterChangeSubscription = this.filterControl.valueChanges.pipe(debounceTime(300)).subscribe((filterValue:string)=>{
-       const input = filterValue.trim().toLowerCase();
-       this.dataSource.filter = input;
-     })
+  private listenFilterChange() {
+    this.filterChangeSubscription = this.filterControl.valueChanges.pipe(debounceTime(300)).subscribe((filterValue: string) => {
+      const input = filterValue.trim().toLowerCase();
+      this.dataSource.filter = input;
+    })
   }
 
-  navigateToEdition(id:string){
-   this.router.navigate([`edit/${id}`],{relativeTo:this.ar.parent});
+  navigateToEdition(id: string) {
+    this.router.navigate([`edit/${id}`], { relativeTo: this.ar.parent });
+  }
+
+  removeSuperheroe(superheroe: Superheroe) {
+    this.superheroeAboutToDelete = superheroe;
+    console.log({superheroe});
+    this.dialog.open(this.confirmRemoveDialogRef).afterClosed().pipe(switchMap((remove:boolean) =>{
+      this.superheroeAboutToDelete = null;
+      return remove ? this.superheroesApiService.removeSuperheroe(superheroe.id).pipe(switchMap(() =>
+        this.getSetSuperheroes
+      )) : of(null)
+    })).subscribe();
   }
 }
