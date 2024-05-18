@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   forwardRef,
   inject,
 } from '@angular/core';
@@ -11,6 +12,7 @@ import {
   FormsModule,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { SuperheroeTeam } from 'src/app/modules/superheroes/models/superheroe-team.interface';
 import { TeamsApiService } from 'src/app/modules/superheroes/services/teams-api.service';
@@ -18,11 +20,12 @@ import { TeamsApiService } from 'src/app/modules/superheroes/services/teams-api.
 @Component({
   selector: 'app-team-selector',
   standalone: true,
-  imports: [CommonModule, MatRadioModule, FormsModule],
+  imports: [CommonModule, MatRadioModule, FormsModule, MatFormFieldModule],
   template: `
+     <mat-label>Elige un equipo para tu superhéroe {{ required ? '* :' : ':' }} </mat-label>
     <mat-radio-group
       aria-label="Selecciona un equipo"
-      ngModel
+      [ngModel]="teamSelected"
       (ngModelChange)="onChange($event)"
     >
       <mat-radio-button *ngFor="let team of teams" [value]="team.text">{{
@@ -41,8 +44,10 @@ import { TeamsApiService } from 'src/app/modules/superheroes/services/teams-api.
   ],
 })
 export class TeamSelectorComponent implements ControlValueAccessor {
+  @Input() required:boolean;
   teamsApiService = inject(TeamsApiService);
   teams: SuperheroeTeam[];
+  teamSelected:string;
   cdr = inject(ChangeDetectorRef);
 
   constructor() {
@@ -56,7 +61,9 @@ export class TeamSelectorComponent implements ControlValueAccessor {
 
   onTouch: any = () => {};
 
-  writeValue(_) {}
+  writeValue(teamSelected:string) {
+   this.teamSelected = teamSelected;
+  }
 
   registerOnChange(fn: any) {
     this.onChange = fn;
