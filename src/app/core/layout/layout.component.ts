@@ -6,9 +6,6 @@ import { LinksComponent } from './components/links/links.component';
   selector: 'app-layout',
   standalone:true,
   imports:[SidenavComponent,LinksComponent],
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  templateUrl: './layout.component.html'
 })
-export class LayoutComponent {
-
-}
+export class LayoutComponent {}

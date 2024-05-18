@@ -12,7 +12,6 @@ import { NgOptimizedImage } from '@angular/common'
   template: `
      <img *ngIf="fileUrl || link" [src]="fileUrl || link ? fileUrl || link : null"  [width]="width" [height]="height"  >
   `,
-  styleUrls: ['./show-avatar.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ShowAvatarComponent implements OnChanges {

@@ -20,7 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SuperPower } from 'src/app/modules/superheroes/models/superpower.interface';
 import { SuperpowerApiService } from 'src/app/modules/superheroes/services/superpower-api.service';
 import { SuperpowerNewComponent } from '../superpower-new/superpower-new.component';
-import { Subscription, tap } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-superpower-select',
@@ -93,9 +93,10 @@ export class SuperpowerSelectComponent implements ControlValueAccessor, AfterVie
   }
 
   superpowerAdded(newSuperpower: string) {
-    this.getSetSuperpowers.subscribe(() => {
-      this.superpowersControl.setValue([...this.superpowersControl.value, newSuperpower])
-      this.cdr.detectChanges();
+      this.getSetSuperpowers.subscribe(() => {
+      const superpowers = this.superpowersControl.value || [];
+      superpowers.push(newSuperpower);
+      this.superpowersControl.setValue(superpowers);
     })
   }
 }

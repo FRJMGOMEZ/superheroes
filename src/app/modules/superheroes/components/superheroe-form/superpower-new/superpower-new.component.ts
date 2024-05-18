@@ -36,7 +36,6 @@ import { SuperpowerApiService } from '../../../services/superpower-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperpowerNewComponent {
-
   @ViewChild('superpowerTRef') superpowerTRef: TemplateRef<any>;
   @Output() superpowerAdded = new EventEmitter<string>();
   private fb = inject(FormBuilder);

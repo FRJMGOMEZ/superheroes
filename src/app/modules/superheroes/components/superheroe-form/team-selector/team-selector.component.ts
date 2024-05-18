@@ -33,7 +33,6 @@ import { TeamsApiService } from 'src/app/modules/superheroes/services/teams-api.
       }}</mat-radio-button>
     </mat-radio-group>
   `,
-  styleUrls: ['./team-selector.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {

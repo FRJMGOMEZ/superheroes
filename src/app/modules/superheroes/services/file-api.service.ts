@@ -8,7 +8,6 @@ import { environment } from 'src/environments/environment';
 })
 export class FileApiService {
   private httpClient = inject(HttpClient);
-  constructor() {}
   uploadFile(file:File){
     const formData = new FormData()
     formData.append('upload_preset','kyhqokcw')

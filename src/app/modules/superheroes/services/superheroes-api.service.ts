@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { SuperHeroeWrite } from '../models/superheroe-write.interface';
-import { Observable, from, map, tap } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import { Superheroe } from '../models/superheroe.interface';
 
 @Injectable({
@@ -9,7 +9,7 @@ import { Superheroe } from '../models/superheroe.interface';
 })
 export class SuperheroesApiService {
 
-  private firestore = inject(AngularFirestore)
+  private firestore = inject(AngularFirestore);
 
   getSuperheroes(): Observable<Superheroe[]> {
     return this.firestore.collection<Superheroe>('superheroes').snapshotChanges().pipe(map((changes) => {

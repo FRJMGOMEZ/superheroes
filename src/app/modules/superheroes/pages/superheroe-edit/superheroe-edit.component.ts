@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DocumentReference } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, from, switchMap } from 'rxjs';
 import { FileApiService } from '../../services/file-api.service';
 import { SuperheroesApiService } from '../../services/superheroes-api.service';
@@ -23,7 +22,7 @@ import { Superheroe } from '../../models/superheroe.interface';
     FormsModule
   ],
   template: `
-     <div class="superheroe-new-container">
+     <div class="superheroe-edit-container">
   <h3>Puedes modificar las características de tu superhéroe o superheroína</h3>
   <app-superheroe-form *ngIf="superheroeControl" [formControl]="superheroeControl" />
   <button mat-button [disabled]="superheroeControl.invalid" (click)="onSubmit()">Guardar edición superheroe</button>
