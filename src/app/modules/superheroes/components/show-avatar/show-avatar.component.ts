@@ -10,7 +10,7 @@ import { NgOptimizedImage } from '@angular/common'
     NgOptimizedImage
   ],
   template: `
-     <img *ngIf="fileUrl" [src]="fileUrl || link ? fileUrl || link : null"  width="400" height="200"  >
+     <img *ngIf="fileUrl || link" [src]="fileUrl || link ? fileUrl || link : null"  [width]="width" [height]="height"  >
   `,
   styleUrls: ['./show-avatar.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
@@ -19,6 +19,10 @@ export class ShowAvatarComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);
   @Input() file:File;
   @Input() link:string;
+
+  @Input() height = 150;
+
+  @Input() width = 200;
   fileUrl:string;
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['file']){
