@@ -1,0 +1,15 @@
+<form *ngIf="superheroeForm" [formGroup]="superheroeForm">
+                <app-upload-avatar formControlName="avatar" />
+    <form class="name-form" [formGroup]="nameGroup">
+        <mat-form-field class="real-name-ff">
+            <mat-label>Introduce el nombre real de tu superheroe...</mat-label>
+            <input formControlName="realName" matInput placeholder="Clark Kent">
+        </mat-form-field>
+        <mat-form-field class="nick-name-ff">
+            <mat-label>Introduce el nombre por el que será conocido o conocida...</mat-label>
+            <input formControlName="nickName" matInput placeholder="Superman">
+        </mat-form-field>
+    </form>
+    <app-team-selector [required]="true" formControlName="team" />
+    <app-superpower-select [required]="true" formControlName="superpowers" />
+</form>

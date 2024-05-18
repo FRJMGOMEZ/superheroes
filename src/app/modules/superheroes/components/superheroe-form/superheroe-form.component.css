@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.real-name-ff {
+  width: 450px;
+}
+
+.nick-name-ff {
+  width: 450px;
+}
+
+.name-form{
+  display: flex;
+  gap: 10px;
+}
+
+mat-form-field{
+  margin-top: 8px;
+}
+
+app-team-selector {
+  margin-top: 10px;
+}
+
+app-superpower-select{
+  margin-top: 10px;
+}
