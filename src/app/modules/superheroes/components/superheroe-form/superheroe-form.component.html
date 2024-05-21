@@ -2,6 +2,7 @@
                 <app-upload-avatar formControlName="avatar" />
     <form class="name-form" [formGroup]="nameGroup">
         <mat-form-field class="real-name-ff">
+            <!-- TODO: Añdir validador primera letra -->
             <mat-label>Introduce el nombre real de tu superheroe...</mat-label>
             <input formControlName="realName" matInput placeholder="Clark Kent">
         </mat-form-field>

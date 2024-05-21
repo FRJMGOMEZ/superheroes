@@ -49,7 +49,7 @@ export class SuperheroeFormComponent implements ControlValueAccessor, Validator,
     return this.superheroeForm?.controls['name'] as FormGroup;
   }
   ngOnDestroy(){
-    this.superheroesChangesSubscription.unsubscribe();
+    this.superheroesChangesSubscription?.unsubscribe();
   }
   validate() {
      return this.superheroeForm.invalid ? {invalid:true} : null;

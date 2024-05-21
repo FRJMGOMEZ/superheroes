@@ -40,7 +40,6 @@ export class UploadAvatarComponent implements ControlValueAccessor {
   onTouch: any = () => { };
 
   writeValue(avatarLink:string) {
-    console.log(avatarLink)
    this.link = avatarLink;
   }
 
