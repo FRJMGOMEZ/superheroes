@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, from, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, catchError, from, switchMap } from 'rxjs';
 import { FileApiService } from '../../services/file-api.service';
 import { SuperheroesApiService } from '../../services/superheroes-api.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,6 +38,7 @@ export class SuperheroeEditComponent {
   private ar = inject(ActivatedRoute);
   private snackBar = inject(MatSnackBar);
   private fb = inject(FormBuilder);
+  private router = inject(Router)
   superheroeControl:FormControl;
   private superheroeId:string;
   private originalAvatar:string;
@@ -59,8 +60,14 @@ export class SuperheroeEditComponent {
     }else{
       obs = from(this.superheroesService.editSuperheroe(this.superheroeId, this.superheroeControl.value));
     }
-     obs.subscribe(() => {
+     obs.pipe(
+      catchError(err => {
+          this.snackBar.open('Se ha producido un error en la edición.');
+          throw err;
+      })
+     ).subscribe(() => {
        this.snackBar.open('El superheroe se ha editado correctamente.');
+       this.router.navigate(['search'],{relativeTo:this.ar.parent});
      })
   }
 }
