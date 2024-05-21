@@ -1,9 +1,6 @@
-import { MediaMatcher } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
+  Component
 } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -21,20 +18,28 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatSidenavModule,
     MatListModule,
   ],
-  templateUrl:'./sidenav.component.html',
+  template: `
+    <div>
+    <mat-toolbar color="primary" >
+        <button mat-icon-button (click)="snav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="example-app-name">Superhéroes app</h1>
+    </mat-toolbar>
+
+    <mat-sidenav-container >
+        <mat-sidenav opened #snav [mode]="'side'"
+            fixedTopGap="56">
+            <ng-content select="[id=links]"></ng-content>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <ng-content select="[id=content]"></ng-content>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+  `,
   styleUrls: ['./sidenav.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidenavComponent implements OnDestroy {
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
-  }
-
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
-  }
-}
+export class SidenavComponent {}
