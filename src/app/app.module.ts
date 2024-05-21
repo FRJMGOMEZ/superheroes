@@ -7,8 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { ProgressSpinnerComponent } from './core/components/progress-spinner/progress-spinner.component';
+import { SpinnerInterceptor } from './core/interceptors/spinner.interceptor';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpErrorsInterceptor } from './core/interceptors/http-errors.interceptor';
 @NgModule({
   declarations: [
     AppComponent
@@ -20,9 +23,19 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
-    HttpClientModule
+    HttpClientModule,
+    ProgressSpinnerComponent,
+    MatSnackBarModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass:SpinnerInterceptor, multi:true
+    },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: HttpErrorsInterceptor, multi: true
+    }
+  ],
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }
