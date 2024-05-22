@@ -24,7 +24,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         <button mat-icon-button (click)="snav.toggle()">
             <mat-icon>menu</mat-icon>
         </button>
-        <h1 class="example-app-name">Superhéroes app</h1>
+        <h1 class="example-app-name">SuperAdmin</h1>
     </mat-toolbar>
 
     <mat-sidenav-container >

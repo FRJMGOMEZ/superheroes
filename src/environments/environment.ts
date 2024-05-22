@@ -13,5 +13,4 @@ export const environment = {
       urlBase:'https://api.cloudinary.com/v1_1',
       preset:'kyhqokcw'
     }
-/*     cloudinaryUrl:"https://api.cloudinary.com/v1_1/${cloudName}/upload" */
 };
