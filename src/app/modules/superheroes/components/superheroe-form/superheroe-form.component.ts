@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, forwardRef, inject } from '@angular/core';
-import { FormBuilder, Validators,  ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
     UploadAvatarComponent,
     MatSnackBarModule
   ],
-  templateUrl:'./superheroe-form.component.html',
+  templateUrl: './superheroe-form.component.html',
   styleUrls: ['./superheroe-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -43,22 +43,26 @@ import { CommonModule } from '@angular/common';
 })
 export class SuperheroeFormComponent implements ControlValueAccessor, Validator, OnDestroy {
   private fb = inject(FormBuilder);
-  superheroeForm:FormGroup;
-  superheroesChangesSubscription:Subscription;
-  get nameGroup():FormGroup{
+  superheroeForm: FormGroup;
+  private superheroesChangesSubscription: Subscription;
+  private nickNameChangesSubscription:Subscription;
+  
+  get nameGroup(): FormGroup {
     return this.superheroeForm?.controls['name'] as FormGroup;
   }
-  ngOnDestroy(){
+
+  ngOnDestroy() {
     this.superheroesChangesSubscription?.unsubscribe();
+    this.nickNameChangesSubscription?.unsubscribe();
   }
   validate() {
-     return this.superheroeForm.invalid ? {invalid:true} : null;
+    return this.superheroeForm.invalid ? { invalid: true } : null;
   }
   onChange: any = () => { };
 
   onTouch: any = () => { };
 
-  writeValue(superheroe:Superheroe) {
+  writeValue(superheroe: Superheroe) {
     this.setForm(superheroe);
   }
 
@@ -70,7 +74,7 @@ export class SuperheroeFormComponent implements ControlValueAccessor, Validator,
     this.onTouch = fn;
   }
 
-  setForm(superheroe:Superheroe){
+  setForm(superheroe: Superheroe) {
     this.superheroeForm = this.fb.group({
       name: this.fb.group({
         realName: this.fb.control(superheroe?.realName),
@@ -81,12 +85,20 @@ export class SuperheroeFormComponent implements ControlValueAccessor, Validator,
       avatar: this.fb.control(superheroe?.avatar, Validators.required)
     });
     this.listenSuperheroChanges();
+    this.listenNickNameChangesAndFormat();
+
   }
 
-  private listenSuperheroChanges(){
-   this.superheroesChangesSubscription =  this.superheroeForm.valueChanges.subscribe((value)=>{
-         this.onChange(value);
+  private listenSuperheroChanges() {
+    this.superheroesChangesSubscription = this.superheroeForm.valueChanges.subscribe((value) => {
+      this.onChange(value);
     })
   }
-  
+
+  private listenNickNameChangesAndFormat() {
+    this.nameGroup.controls['nickName'].valueChanges.subscribe((nickName) => {
+      this.nameGroup.controls['nickName'].setValue(nickName.toUpperCase(), { emitEvent: false })
+    })
+  }
+
 }

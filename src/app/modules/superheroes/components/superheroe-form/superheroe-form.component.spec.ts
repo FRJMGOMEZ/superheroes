@@ -50,12 +50,6 @@ describe('SuperheroeFormComponent', () => {
         fixture.detectChanges();
     });
 
-    afterEach(() => {
-        if (component.superheroesChangesSubscription) {
-            component.superheroesChangesSubscription.unsubscribe();
-        }
-    });
-
     it('should create', () => {
         expect(component).toBeTruthy();
     });
