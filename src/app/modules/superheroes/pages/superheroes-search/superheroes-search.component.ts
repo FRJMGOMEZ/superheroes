@@ -13,6 +13,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subscription, debounceTime, of, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -28,7 +29,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ],
   templateUrl: './superheroes-search.component.html',
   styleUrls: ['./superheroes-search.component.css'],
@@ -43,6 +45,7 @@ export class SuperheroesSearchComponent implements AfterViewInit, OnDestroy {
   private router = inject(Router);
   private ar = inject(ActivatedRoute);
   private dialog = inject(MatDialog);
+  private matSnackBar = inject(MatSnackBar);
 
   displayedColumns: string[] = ['avatar', 'realName', 'nickName', 'team', 'superpowers', 'edit', 'remove'];
   dataSource: MatTableDataSource<Superheroe>;
@@ -99,12 +102,14 @@ export class SuperheroesSearchComponent implements AfterViewInit, OnDestroy {
 
   removeSuperheroe(superheroe: Superheroe) {
     this.superheroeAboutToDelete = superheroe;
-    console.log({superheroe});
     this.dialog.open(this.confirmRemoveDialogRef).afterClosed().pipe(switchMap((remove:boolean) =>{
       this.superheroeAboutToDelete = null;
       return remove ? this.superheroesApiService.removeSuperheroe(superheroe.id).pipe(switchMap(() =>
         this.getSetSuperheroes
       )) : of(null)
-    })).subscribe();
+    })
+  ).subscribe(()=>{
+        this.matSnackBar.open(`${superheroe.nickName} se ha eliminado correctamente.`)
+    });
   }
 }
